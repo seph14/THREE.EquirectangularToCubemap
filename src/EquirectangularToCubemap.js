@@ -41,14 +41,10 @@ function EquirectangularToCubemap( renderer ) {
 EquirectangularToCubemap.prototype.convert = function( source, size ) {
 
 	var mapSize = Math.min( size, this.maxSize );
-	this.cubeRenderTarget = new THREE.WebGLCubeRenderTarget( mapSize, 
-		{ format: THREE.RGBFormat, 
-		  generateMipmaps: true, 
-		  minFilter: THREE.LinearMipmapLinearFilter } );
-	this.camera = new THREE.CubeCamera( 1, 100000, this.cubeRenderTarget );
+	this.camera = new THREE.CubeCamera( 1, 100000, mapSize );
 	this.material.map = source;
 
-	this.camera.updateCubeMap( this.renderer, this.scene );
+	this.camera.update( this.renderer, this.scene );
 
 	return this.camera.renderTarget.texture;
 
@@ -65,4 +61,3 @@ else {
 }
 
 }).call(this);
-
