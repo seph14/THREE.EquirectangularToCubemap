@@ -18,7 +18,12 @@ function EquirectangularToCubemap( renderer ) {
 	var gl = this.renderer.getContext();
 	this.maxSize = gl.getParameter( gl.MAX_CUBE_MAP_TEXTURE_SIZE )
 
-	this.camera = new THREE.CubeCamera( 1, 100000, 1 );
+	this.cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 512, 
+		{ format: THREE.RGBFormat, 
+		  generateMipmaps: true, 
+		  minFilter: THREE.LinearMipmapLinearFilter } );
+
+	this.camera = new THREE.CubeCamera( 1, 100000, this.cubeRenderTarget );
 
 	this.material = new THREE.MeshBasicMaterial( {
 		map: null,
@@ -36,7 +41,11 @@ function EquirectangularToCubemap( renderer ) {
 EquirectangularToCubemap.prototype.convert = function( source, size ) {
 
 	var mapSize = Math.min( size, this.maxSize );
-	this.camera = new THREE.CubeCamera( 1, 100000, mapSize );
+	this.cubeRenderTarget = new THREE.WebGLCubeRenderTarget( mapSize, 
+		{ format: THREE.RGBFormat, 
+		  generateMipmaps: true, 
+		  minFilter: THREE.LinearMipmapLinearFilter } );
+	this.camera = new THREE.CubeCamera( 1, 100000, this.cubeRenderTarget );
 	this.material.map = source;
 
 	this.camera.updateCubeMap( this.renderer, this.scene );
