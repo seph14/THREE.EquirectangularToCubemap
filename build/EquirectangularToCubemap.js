@@ -41,7 +41,7 @@ function EquirectangularToCubemap( renderer ) {
 EquirectangularToCubemap.prototype.convert = function( source, size ) {
 
 	var mapSize = Math.min( size, this.maxSize );
-	this.cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 512, 
+	this.cubeRenderTarget = new THREE.WebGLCubeRenderTarget( mapSize, 
 		{ format: THREE.RGBFormat, 
 		  generateMipmaps: true, 
 		  minFilter: THREE.LinearMipmapLinearFilter } );
